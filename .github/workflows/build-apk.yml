@@ -27,6 +27,9 @@ jobs:
         with:
           gradle-version: "8.7"
 
+      - name: Extract Android source
+        run: unzip -o furuan-clicker-android-source.zip -d .
+
       - name: Build APK
         run: gradle assembleDebug
 
