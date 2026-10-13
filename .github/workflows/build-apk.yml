@@ -9,8 +9,13 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+
+    env:
+      ANDROID_HOME: /usr/local/lib/android/sdk
+      ANDROID_SDK_ROOT: /usr/local/lib/android/sdk
+
     steps:
-      - name: Checkout
+      - name: Checkout source
         uses: actions/checkout@v4
 
       - name: Set up Java
@@ -19,16 +24,13 @@ jobs:
           distribution: temurin
           java-version: "17"
 
-      - name: Set up Android SDK
-        uses: android-actions/setup-android@v3
+      - name: Extract Android source
+        run: unzip -o furuan-clicker-android-source.zip -d .
 
       - name: Set up Gradle
         uses: gradle/actions/setup-gradle@v4
         with:
           gradle-version: "8.7"
-
-      - name: Extract Android source
-        run: unzip -o furuan-clicker-android-source.zip -d .
 
       - name: Build APK
         run: gradle assembleDebug
