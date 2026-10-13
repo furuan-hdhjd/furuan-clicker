@@ -10,10 +10,6 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
-    env:
-      ANDROID_HOME: /usr/local/lib/android/sdk
-      ANDROID_SDK_ROOT: /usr/local/lib/android/sdk
-
     steps:
       - name: Checkout source
         uses: actions/checkout@v4
@@ -31,6 +27,12 @@ jobs:
         uses: gradle/actions/setup-gradle@v4
         with:
           gradle-version: "8.7"
+
+      - name: Fix JVM target
+        run: |
+          sed -i 's/jvmTarget = "1.8"/jvmTarget = "17"/g' app/build.gradle.kts
+          sed -i 's/jvmTarget = '\''1.8'\''/jvmTarget = '\''17'\''/g' app/build.gradle.kts
+          cat app/build.gradle.kts
 
       - name: Build APK
         run: gradle assembleDebug
